@@ -1,0 +1,54 @@
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:postgres@localhost:5432/products2?schema=public"
+}
+generator client {
+  provider = "prisma-client-js"
+
+}
+
+model Baskets {
+  BasketId     String
+  ProductId    String
+  UserId       String
+  IsCheckedOut Boolean @default(false)
+
+  @@id([ProductId, UserId, BasketId], map: "PK_Baskets")
+}
+
+model Invoices {
+  BasketId String
+  UserId   String
+  Items    String
+
+  @@id([UserId, BasketId], map: "PK_Invoices")
+}
+
+model ProductCounts {
+  Asin  String @id(map: "PK_ProductCounts")
+  Count Int
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model Products {
+  asin              String  @id @db.VarChar(200)
+  title             String?  @db.VarChar(1500)
+  imgUrl            String?  @db.VarChar(200)
+  productUrl        String?  @db.VarChar(200)
+  stars             Decimal? @db.Decimal(28, 6)
+  reviews           BigInt?
+  price             Decimal? @db.Decimal(28, 6)
+  isBestSeller      Boolean?
+  boughtInLastMonth BigInt?
+  categoryName      String?  @db.VarChar(200)
+}
+
+model EFMigrationsHistory {
+  MigrationId    String @id(map: "PK___EFMigrationsHistory") @db.VarChar(150)
+  ProductVersion String @db.VarChar(32)
+
+  @@map("__EFMigrationsHistory")
+}
+
+
