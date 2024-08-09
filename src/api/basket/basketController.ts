@@ -10,6 +10,12 @@ class BasketController {
     const serviceResponse = await basketService.addItemToBasket(_req.body);
     return handleServiceResponse(serviceResponse, res);
   };
+
+    public checkoutBasket: RequestHandler = async (_req: Request, res: Response) => {
+      log(_req.body);
+      const serviceResponse = await basketService.checkoutBasket(_req.body);
+      return handleServiceResponse(serviceResponse, res);
+  };
 }
 
 export const basketController = new BasketController();

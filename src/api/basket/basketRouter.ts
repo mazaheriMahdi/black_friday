@@ -8,6 +8,7 @@ import { GetProductByCategorySchema, GetProductSchema, ProductSchema } from "@/a
 import { basketController } from "./basketController";
 import { AddItemToBasketSchema } from "./basketModel";
 import { AddItemToBasketDtoSchema } from "./dto/addItemToBasketDto";
+import { CheckoutBasketDtoSchema } from "./dto/checkoutBasketDto";
 
 export const basketRegistry = new OpenAPIRegistry();
 
@@ -29,4 +30,21 @@ basketRegistry.registerPath({
   responses: createApiResponse(z.string(), "Success"),
 });
 
+basketRegistry.registerPath({
+  method: "post",
+  path: "/checkout-basket",
+  request: {
+    body: {
+      content: {
+        "application/json": {
+          schema: CheckoutBasketDtoSchema,
+        },
+      },
+    },
+  },
+  tags: ["Basket"],
+  responses: createApiResponse(z.string(), "Success"),
+});
+
 basketRouter.post("/add-item-to-basket", basketController.addItemToBasket);
+basketRouter.post("/checkout-basket", basketController.checkoutBasket);

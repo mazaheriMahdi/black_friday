@@ -4,16 +4,44 @@ import { BasketModel } from "@/api/basket/basketModel";
 import { date } from "zod";
 
 export class BasketRepository {
-  async findBasketById(basketId: string): Promise<BasketModel | null> {
+  async getBasket(basketId: string, userId: string, productId: string): Promise<BasketModel | null> {
     const client = new PrismaClient();
     await client.$connect();
     const basket = await client.baskets.findFirst({
       where: {
         BasketId: basketId,
+        UserId: userId,
+        ProductId: productId,
       },
     });
     await client.$disconnect();
     return basket;
+  }
+  async getBasketItems(basketId: string, userId: string): Promise<BasketModel[]> {
+    const client = new PrismaClient();
+    await client.$connect();
+    const basket = await client.baskets.findMany({
+      where: {
+        BasketId: basketId,
+        UserId: userId,
+      },
+    });
+    await client.$disconnect();
+    return basket;
+  }
+  async checkoutBasket(basketId: string, userId: string): Promise<void> {
+    const client = new PrismaClient();
+    await client.$connect();
+    await client.baskets.updateMany({
+      data: {
+        IsCheckedOut: true,
+      },
+      where: {
+        BasketId: basketId,
+        UserId: userId,
+      },
+    });
+    await client.$disconnect();
   }
 
   async newBasket(addItemToBasketDto: AddItemToBasketRequestDto): Promise<void> {
