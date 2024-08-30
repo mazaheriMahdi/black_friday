@@ -1,0 +1,41 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+  postgresql:
+    endpoint: host.docker.internal:5432
+    transport: tcp
+    username: postgres
+    password: ${env:POSTGRESQL_PASSWORD}
+    databases:
+      - webscraper
+    collection_interval: 10s
+
+exporters:
+  prometheus:
+    endpoint: "0.0.0.0:8889"
+
+  otlp:
+    endpoint: jaeger:4317
+    tls:
+      insecure: true
+
+connectors:
+  spanmetrics:
+
+processors:
+  batch:
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [spanmetrics, otlp]
+
+    # The metrics pipeline receives generated span metrics from 'spanmetrics' connector
+    # and pushes to Prometheus exporter, which makes them available for scraping on :8889.
+    metrics/spanmetrics:
+      receivers: [spanmetrics, postgresql]
+      exporters: [prometheus]

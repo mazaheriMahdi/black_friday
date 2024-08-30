@@ -2,12 +2,15 @@ version: '3.9'  # Specify the Compose file format version
 
 services:
   app:
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/products2?schema=public"
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
     command: npm run start
+
 
 
   jaeger:

@@ -9,13 +9,14 @@ import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions'
 import { HttpInstrumentation } from '@opentelemetry/instrumentation-http';
 import { PrismaInstrumentation } from '@prisma/instrumentation'
 import { ExpressInstrumentation } from '@opentelemetry/instrumentation-express';
+import {env} from "@/common/utils/envConfig";
 
 // Enable maximum logging for troubleshooting
 diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.ALL);
 
 // Configure the OTLP trace exporter to send traces to the Jaeger/OTel collector
 const traceExporter = new OTLPTraceExporter({
-    url: 'http://localhost:4318/v1/traces', // Ensure this matches your collector endpoint
+    url: 'http://host.docker.internal:4318/v1/traces', // Ensure this matches your collector endpoint
 });
 
 // Define the resource (service name, etc.)
