@@ -18,5 +18,12 @@ RUN npm run build
 # Expose port 8080
 EXPOSE 8080
 
+ENV NODE_ENV "development"
+ENV PORT "8080"
+ENV HOST "localhost"
+ENV COMMON_RATE_LIMIT_WINDOW_MS "1000"
+ENV COMMON_RATE_LIMIT_MAX_REQUESTS "20"
+
+
 # Start the app
 CMD npm run start
