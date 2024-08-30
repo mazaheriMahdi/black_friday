@@ -7,6 +7,7 @@ import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentation
 import { Resource } from '@opentelemetry/resources';
 import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
 import { HttpInstrumentation } from '@opentelemetry/instrumentation-http';
+import { PrismaInstrumentation } from '@prisma/instrumentation'
 import { ExpressInstrumentation } from '@opentelemetry/instrumentation-express';
 
 // Enable maximum logging for troubleshooting
@@ -30,6 +31,7 @@ const sdk = new NodeSDK({
         getNodeAutoInstrumentations(),
         new HttpInstrumentation(),
         new ExpressInstrumentation(),
+        new PrismaInstrumentation()
     ],
 });
 

@@ -27,6 +27,7 @@
     "@opentelemetry/sdk-node": "^0.52.1",
     "@opentelemetry/semantic-conventions": "^1.26.0",
     "@prisma/client": "^5.18.0",
+    "@prisma/instrumentation": "^5.19.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "envalid": "^8.0.0",
